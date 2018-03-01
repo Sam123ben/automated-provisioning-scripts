@@ -14,7 +14,7 @@
   tasks:
 
       - name: Create a Jenkins process user and group in the docker container
-        shell: echo 'Create a Jenkins process user and group in the docker container'
+        command: echo 'Create a Jenkins process user and group in the docker container'
 
       - name: Create the jenkins group
         group:
@@ -30,7 +30,7 @@
           uid: '{{ jenkins_user_id }}'
           group: '{{ jenkins_process_group }}'
           state: present
-          shell: /bin/bash
+          command: /bin/bash
           createhome: yes
           home: '{{ jenkins_home }}'
         ignore_errors: true
@@ -65,7 +65,7 @@
           - { src: /root/ansible/jenkins-utilities/tini_pub.gpg, dest: /var/jenkins_home/ }
 
       - name: Copy the relevant plugin related files to its specific directories
-        shell: cp -R /root/ansible/jenkins-utilities/{{item}}
+        command: cp -R /root/ansible/jenkins-utilities/{{item}}
         with_items:
           - plugins.txt /usr/share/jenkins/ref/
           - plugins-blue-ocean.txt /usr/share/jenkins/ref/
@@ -77,5 +77,5 @@
         no_log: false
 
       - name: Append the required lines to the newly created file as in above
-        shell: echo '{{ vault_pwd }}' >> {{ jenkins_workspace }}/ignore_file
+        command: echo '{{ vault_pwd }}' >> {{ jenkins_workspace }}/ignore_file
         no_log: false

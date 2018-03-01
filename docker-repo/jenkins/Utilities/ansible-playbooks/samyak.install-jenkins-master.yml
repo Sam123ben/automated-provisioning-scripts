@@ -46,30 +46,29 @@
         when: JENKINS_VERSION is not defined
 
       - name: Install the downloaded rpm package
-        shell: '{{ item }}'
+        command: '{{ item }}'
         with_items:
           - rpm -Uvh /usr/share/jenkins/epel-release-7-11.noarch.rpm
           - yum install dpkg -y
 
       - name: Get the output of the architecture of the os
-        shell: dpkg --print-architecture
+        command: dpkg --print-architecture
         register: architecture_check
 
       - debug: msg={{ architecture_check.stdout }}
 
-      - name: Create a shell script and the bash script
+      - name: Create a command script
         template:
-          src: '{{ item.src }}'
-          dest: '{{ item.dest }}'
+          src: 'tini_setup.sh.j2'
+          dest: '/usr/share/jenkins/tini_setup.sh'
           owner: root
           group: root
           mode: 0775
         with_items:
-          - { src: tini_setup.sh.j2, dest: "/usr/share/jenkins/tini_setup.sh" }
-          - { src: proxy.sh.j2, dest: "/etc/profile.d/proxy.sh" }
+          - { src: , dest: "" }
 
       - name: Install and configure the TINI setup in the container
-        shell: sh /usr/share/jenkins/tini_setup.sh
+        command: sh /usr/share/jenkins/tini_setup.sh
 
       - name: Changes the ownership of jenkins home directory
         file:
@@ -95,7 +94,7 @@
         register: jenkins_users_config
 
       - name: Install the recommended plugins to the newly installed Jenkins Master (recommended default plugins) and blueocean plugins
-        shell: '{{ item  }}'
+        command: '{{ item  }}'
         with_items:
           - xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
           - xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins-blue-ocean.txt
@@ -105,9 +104,9 @@
           JENKINS_UC_EXPERIMENTAL: '{{ JENKINS_UC_EXPERIMENTAL_URL }}'
 
       - name: Create the known_hosts file in the .ssh of the jenkins home dir
-        shell: touch {{jenkins_home}}/.ssh/known_hosts 
+        command: touch {{jenkins_home}}/.ssh/known_hosts 
 
-      - name: Change the ownership of the files and the keys, also source the .bash_profile script
+      - name: Change the ownership of the files and the keys
         file: 
           dest: '{{ item }}'
           owner: '{{ jenkins_process_user }}'
@@ -117,11 +116,10 @@
           - '{{jenkins_home}}/.ssh'
           - /usr/share/jenkins/
 
-      - name: Change the mod of the id_rsa pvt key
-        shell: '{{ item }}'
+      - name: Change the mod of the id_jenkins_rsa pvt key
+        command: '{{ item }}'
         with_items:
           - chmod -R 0400 {{jenkins_home}}/.ssh/id_rsa
-          - source {{jenkins_home}}/.bash_profile
 
       - name: delete or remove the tmp files
         file: 
