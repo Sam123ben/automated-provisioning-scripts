@@ -1,0 +1,30 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+    - default/main.yml
+
+  pre_tasks:
+    - name: Check the java version if installed or not
+      shell: java -version
+      register: check_java_version
+      ignore_errors: true
+
+    - debug: msg={{ check_java_version }}
+
+  roles:
+    - role: geerlingguy.java
+      when: "ansible_os_family == 'RedHat'"
+      java_packages:
+        - java-1.8.0-openjdk
+
+  tasks:
+    - name: Check the java version if installed properly
+      shell: java -version
+      register: check_java_version
+      ignore_errors: true
+
+    - debug: msg={{ check_java_version }}

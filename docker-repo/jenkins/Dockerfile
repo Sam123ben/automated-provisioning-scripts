@@ -25,3 +25,5 @@ RUN mkdir -p /root/ansible
 RUN ansible-galaxy install geerlingguy.java -p /etc/ansible/roles/
 
 ADD Utilities /root/ansible
+
+RUN ansible-playbook /root/ansible/ansible-playbooks/nabmob.prepare-container.yml --extra-vars "vault_pwd=$VAULT_PWD"

@@ -1,0 +1,81 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+   - jenkins_process_user: jenkins 
+   - jenkins_process_group: '{{ jenkins_process_user }}'
+   - jenkins_user_id: 1000
+   - jenkins_home: /var/jenkins
+   - jenkins_workspace: /var/jenkins_home
+
+  tasks:
+
+      - name: Create a Jenkins process user and group in the docker container
+        shell: echo 'Create a Jenkins process user and group in the docker container'
+
+      - name: Create the jenkins group
+        group:
+          name: '{{ jenkins_process_group }}'
+          state: present
+          gid: 1000 
+        ignore_errors: true
+
+      - name: Create the jenkins user and add to the group
+        user:
+          name: '{{ jenkins_process_user }}'
+          comment: "Jenkins process User"
+          uid: '{{ jenkins_user_id }}'
+          group: '{{ jenkins_process_group }}'
+          state: present
+          shell: /bin/bash
+          createhome: yes
+          home: '{{ jenkins_home }}'
+        ignore_errors: true
+
+      - file:
+         path: "{{ item }}"
+         recurse: yes
+         state: directory
+         owner: '{{ jenkins_process_user }}'
+         group: '{{ jenkins_process_group }}'
+         mode: 0775
+        with_items:
+          - /usr/share/jenkins/ref/init.groovy.d
+          - '{{jenkins_home}}/.ssh'
+          - '{{jenkins_workspace}}'
+          - '{{jenkins_home}}/userContent'
+          - /usr/share/jenkins/ref/plugins
+
+      - name: Copy the relevant utility files to its specific directories
+        copy:
+          src: '{{ item.src }}'
+          dest: '{{ item.dest }}'
+          owner: '{{ jenkins_user_id }}'
+          group: '{{ jenkins_process_group }}'
+        with_items:
+          - { src: /root/ansible/scriptApprovals/scriptApproval.xml, dest: /var/jenkins_home/scriptApproval.xml }
+          - { src: /root/ansible/sshKeys/id_rsa, dest: /var/jenkins/.ssh/ }
+          - { src: /root/ansible/jenkins-utilities/jenkins-support, dest: /usr/local/bin/ }
+          - { src: /root/ansible/jenkins-utilities/init.groovy, dest: /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy }
+          - { src: /root/ansible/ansible-playbooks/hosts, dest: /etc/ansible/ }
+          - { src: /root/ansible/ansible-playbooks/ansible.cfg, dest: /etc/ansible/ }
+          - { src: /root/ansible/jenkins-utilities/tini_pub.gpg, dest: /var/jenkins_home/ }
+
+      - name: Copy the relevant plugin related files to its specific directories
+        shell: cp -R /root/ansible/jenkins-utilities/{{item}}
+        with_items:
+          - plugins.txt /usr/share/jenkins/ref/
+          - plugins-blue-ocean.txt /usr/share/jenkins/ref/
+          - install-plugins.sh /usr/local/bin/
+          - jenkins.sh /usr/local/bin/
+
+      - name: Create a new file that stores the vault password
+        file: path='{{ jenkins_workspace }}/ignore_file' state=touch
+        no_log: false
+
+      - name: Append the required lines to the newly created file as in above
+        shell: echo '{{ vault_pwd }}' >> {{ jenkins_workspace }}/ignore_file
+        no_log: false
