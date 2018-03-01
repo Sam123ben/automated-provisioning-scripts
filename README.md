@@ -26,12 +26,13 @@ Below images could be built:
 
     1. vagrant up
     2. vagrant ssh
-    4. cd vibrato-code-test/docker-repo/jenkins
-    5. sudo sh ./docker-image-build.sh
+    3. cd vibrato-code-test/docker-repo/jenkins
+    4. sudo sh ./docker-image-build.sh
        Pass the appropriate values for the parameters you will be prompted:
          a) vault_pass: qwertyuiop
          b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}
          c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
+    5. You can access the url: 'https://192.168.33.10/' (uid/pwd: admin/password)
 
 ## [TESTING] Step to automate the Latest Jenkins installation on vagrant
 

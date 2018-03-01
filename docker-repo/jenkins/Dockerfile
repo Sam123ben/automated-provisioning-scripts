@@ -1,7 +1,5 @@
 FROM scratch
 
-RUN mkdir -p /root/ansible
-ADD Utilities /root/ansible
 ADD Utilities/packages/centos-7-docker.tar.xz /
 
 LABEL name="CentOS Base Image" \
@@ -23,10 +21,11 @@ ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 
 RUN yum update -y && yum install -y python3 ansible && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /root/ansible
+ADD Utilities /root/ansible
+
 RUN mkdir -p /etc/ansible/roles
 RUN ansible-galaxy install geerlingguy.java -p /etc/ansible/roles/
-
-
 
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.prepare-container.yml --extra-vars "vault_pwd=$VAULT_PWD"
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.install-geerling-java.yml
