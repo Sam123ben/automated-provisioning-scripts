@@ -19,3 +19,9 @@ ENV JENKINS_SECURITY_REALM HudsonPrivateSecurityRealm
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 
 RUN yum update -y && yum install -y python3 ansible && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /etc/ansible/roles
+RUN mkdir -p /root/ansible
+RUN ansible-galaxy install geerlingguy.java -p /etc/ansible/roles/
+
+ADD Utilities /root/ansible
