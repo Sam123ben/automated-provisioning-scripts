@@ -6,9 +6,6 @@ agent_port='8085'
 master_redirect_port="8080"
 agent_redirect_port='8085'
 
-mount_volume_jenkins_home_path="/home/vagrant/jenkins_home"
-mkdir $mount_volume_jenkins_home_path
-
 echo '\nPlease enter the known vault password: '
 read vault_pass
 
@@ -35,7 +32,7 @@ container=$image_name-app
 sleep 10s
 
 echo '\nRunning the container'
-docker run --restart=always --name $container -u jenkins -p $master_redirect_port:$master_port -p $agent_redirect_port:$agent_port -v $mount_volume_jenkins_home_path:/var/jenkins_home -d $image_name
+docker run --restart=always --name $container -u jenkins -p $master_redirect_port:$master_port -p $agent_redirect_port:$agent_port -d $image_name
 
 sleep 5s
 docker ps
