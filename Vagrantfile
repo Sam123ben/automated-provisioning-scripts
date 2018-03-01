@@ -5,15 +5,16 @@ Vagrant.configure("2") do |config|
     sudo yum update -y && yum install -y python ansible git \
          && yum install -y yum-utils device-mapper-persistent-data lvm2 \
          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
-         && yum-config-manager --enable docker-ce-edge && yum install -y docker-ce \
+         && yum-config-manager --enable docker-ce-edge && yum install -y docker-ce epel-release nginx \
          && usermod -aG docker vagrant \
          && systemctl enable docker && systemctl start docker && systemctl status docker \
+         && systemctl enable nginx && systemctl start nginx && systemctl start nginx \
          && docker run hello-world \
          && docker ps -a
 
     git clone -b feature/vagrant-setup https://github.com/Sam123ben/vibrato-code-test.git
-    cd /home/vagrant/vibrato-code-test
-    sudo sh ./docker-repo/jenkins/vagrant-auto-build.sh qwertyuiop jenkins-latest-master-image
+    cd 
+    sudo sh /home/vagrant/vibrato-code-test/docker-repo/jenkins/vagrant-auto-build.sh 'qwertyuiop' 'jenkins-latest-master-image'
   SHELL
 
 end
