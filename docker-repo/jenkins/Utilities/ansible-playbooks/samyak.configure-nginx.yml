@@ -13,18 +13,25 @@
             - device-mapper-persistent-data 
             - lvm2
             - epel-release
-            - nginx
             - initscripts
             - rpm
             - lzma
             - perl
           state: installed
   
+      - name: install the latest version of Nginx, firewalld, and docker
+        yum:
+          name: '{{ item }}'
+          state: latest
+        with_items:
+          - nginx
+          - firewalld
+          - docker
+
       - name: Enable the services we installed
         command: '{{ item }}'
         with_items:
           - systemctl enable firewalld
-          - usermod -aG docker vagrant
           - systemctl enable docker
 
       - name: Start the firewalld and docker services

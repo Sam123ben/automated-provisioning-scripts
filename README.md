@@ -4,9 +4,9 @@ This repository is created to help team to provision a docker container inside a
 
 As a best practice always ensure that the provisioning of any server or infra are done via any configuration management automation tool such as Ansible/Chef/Puppet/Salt. Even though we code our Dockerfile but still take care of creating image using Ansible rather the Dockerfile.
 
-NOTE: The whole automation is done under a non-proxy network, but if you are under a proxy please do add appropriate proxy       details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of           the Jenkins image.
+NOTE: The whole automation is developed and tested under a non-proxy network, but if you are under a proxy please do add appropriate proxy details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of the Jenkins image.
 
-#This co-relate to one of my favorite quote:
+##This co-relate to one of my favorite quote
 
     """ ALWAYS TREAT YOUR INFRA/SERVERS AS CATTLE AND NOT AS PET """
 
