@@ -94,7 +94,7 @@
           mode: 0775
         register: jenkins_users_config
 
-      - name: Install the recommended plugins to the newly installed Jenkins Master
+      - name: Install the recommended plugins to the newly installed Jenkins Master (recommended default plugins) and blueocean plugins
         shell: '{{ item  }}'
         with_items:
           - xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
