@@ -1,6 +1,8 @@
 # vibrato-code-test
 
-This repository is created to help team to provision a docker container inside a vagrant image. This will create a new docker image with Centos flavour of Linux along with Jenkins and Ansible Tower installed.
+This repository is created to help team to provision a docker container inside a vagrant image. This will create a new docker image with Centos flavour of Linux along with Jenkins and Ansible Tower installed. To ease up the setup, I have a shell script that will create the docker image and will run the container to start the Jenkins process.
+
+NOTE: The whole automation is done under a non-proxy network, but if you are under a proxy please do add appropriate proxy       details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of           the Jenkins image.
 
 Below images could be built:
 
@@ -13,3 +15,19 @@ Below images could be built:
     2. Ansible Tower (Specific version):
         Install the latest/specific version of Ansible tower inside the docker container. I used the opensource version of Dockerfile but customized it to fit in for layering the Ansible Tower installation and configuration
 
+
+## Steps to manually create Jenkins Image using the shell script on your local macbook or any docker installed host machine
+
+    1. git clone https://github.com/Sam123ben/vibrato-code-test.git
+    2. cd vibrato-code-test/docker-repo/jenkins
+    3. sudo sh ./docker-image-build.sh
+       Pass the appropriate values for the parameters you will be prompted:
+         a) vault_pass: qwertyuiop
+         b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}
+         c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
+
+## Step to automate the Latest Jenkins installation on vagrant
+
+    1. vagrant up
+    2. on the browser type: http://192.168.33.10:8080
+    3. vagrant ssh to login to VM

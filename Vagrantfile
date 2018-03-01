@@ -13,6 +13,7 @@ Vagrant.configure("2") do |config|
 
     git clone -b feature/vagrant-setup https://github.com/Sam123ben/vibrato-code-test.git
     cd /home/vagrant/vibrato-code-test
+    sudo sh ./docker-repo/jenkins/vagrant-auto-build.sh qwertyuiop jenkins-latest-master-image
   SHELL
 
 end
