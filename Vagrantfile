@@ -8,7 +8,8 @@ Vagrant.configure("2") do |config|
          && yum-config-manager --enable docker-ce-edge && yum install -y docker-ce \
          && usermod -aG docker vagrant \
          && systemctl enable docker && systemctl start docker && systemctl status docker \
-         && docker run hello-world
+         && docker run hello-world \
+         && docker ps -a
 
     git clone -b feature/vagrant-setup https://github.com/Sam123ben/vibrato-code-test.git
     cd /home/vagrant/vibrato-code-test
