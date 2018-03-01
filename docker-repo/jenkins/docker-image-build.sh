@@ -37,11 +37,5 @@ sleep 10s
 echo '\nRunning the container'
 docker run --restart=always --name $container -u jenkins -p $master_redirect_port:$master_port -p $agent_redirect_port:$agent_port -v $mount_volume_jenkins_home_path:/var/jenkins_home -d $image_name
 
-sleep 10s
-echo '\nadd additional executors to the master jenkins Node\n'
-ansible-playbook Utilities/ansible-playbooks/nabmob.add-master-executors.yml
-
-echo '\nRestart the docker container\n'
-docker stop $container
 sleep 5s
-docker start $container
+docker ps
