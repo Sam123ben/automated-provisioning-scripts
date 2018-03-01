@@ -116,10 +116,10 @@
           - '{{jenkins_home}}/.ssh'
           - /usr/share/jenkins/
 
-      - name: Change the mod of the id_rsa pvt key
+      - name: Change the mod of the id_jenkin_rsa pvt key
         shell: '{{ item }}'
         with_items:
-          - chmod -R 0400 {{jenkins_home}}/.ssh/id_rsa
+          - chmod -R 0400 {{jenkins_home}}/.ssh/id_jenkins_rsa
 
       - name: delete or remove the tmp files
         file: 
