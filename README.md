@@ -24,9 +24,10 @@ Below images could be built:
 
 ## Steps to manually create Jenkins Image using the shell script on your local macbook or any docker installed host machine
 
-    1. git clone https://github.com/Sam123ben/vibrato-code-test.git
-    2. cd vibrato-code-test/docker-repo/jenkins
-    3. sudo sh ./docker-image-build.sh
+    1. vagrant up
+    2. vagrant ssh
+    4. cd vibrato-code-test/docker-repo/jenkins
+    5. sudo sh ./docker-image-build.sh
        Pass the appropriate values for the parameters you will be prompted:
          a) vault_pass: qwertyuiop
          b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}

@@ -6,10 +6,8 @@ Vagrant.configure("2") do |config|
          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
          && yum-config-manager --enable docker-ce-edge \
          && git clone -b feature/vagrant-setup https://github.com/Sam123ben/vibrato-code-test.git \
-         && ansible-playbook /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml \
-         && docker run hello-world \
-         && docker ps -a \
-         && sh /home/vagrant/vibrato-code-test/docker-repo/jenkins/vagrant-auto-build.sh
+         && ansible-playbook /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml
+
   SHELL
 
 end
