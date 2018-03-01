@@ -13,17 +13,15 @@
           owner: root
           group: root
         with_items:
-          - { src: /root/ansible/certificates/jenkins-selfsigned.key, dest: /etc/ssl/private/ }
-          - { src: /root/ansible/certificates/jenkins-selfsigned.crt, dest: /etc/ssl/certs/ }
-          - { src: /root/ansible/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
-          - { src: /root/ansible/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
-          - { src: /root/ansible/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
-          - { src: /root/ansible/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/jenkins-selfsigned.key, dest: /etc/ssl/private/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/jenkins-selfsigned.crt, dest: /etc/ssl/certs/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
 
       - name: restart the nginx service
-        command: '{{ item }}'
-        with_items:
-          - systemctl restart nginx && systemctl status nginx
+        service: name=nginx state=restarted
         register: nginx_status
 
-      - debug: msg='{{ nginx_status.stdout }}'
+      - debug: var='{{ nginx_status }}'
