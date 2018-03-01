@@ -4,6 +4,10 @@ This repository is created to help team to provision a docker container inside a
 
 NOTE: The whole automation is done under a non-proxy network, but if you are under a proxy please do add appropriate proxy       details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of           the Jenkins image.
 
+#This co-relate to one of my favorite quote:
+
+    """ ALWAYS TREAT YOUR INFRA/SERVERS AS CATTLE AND NOT AS PET """
+
 Below images could be built:
 
     1. Jenkins (latest version or any specific version):
