@@ -10,8 +10,8 @@
         copy:
           src: '{{ item.src }}'
           dest: '{{ item.dest }}'
-          owner: '{{ jenkins_user_id }}'
-          group: '{{ jenkins_process_group }}'
+          owner: root
+          group: root
         with_items:
           - { src: /root/ansible/certificates/jenkins-selfsigned.key, dest: /etc/ssl/private/ }
           - { src: /root/ansible/certificates/jenkins-selfsigned.crt, dest: /etc/ssl/certs/ }
