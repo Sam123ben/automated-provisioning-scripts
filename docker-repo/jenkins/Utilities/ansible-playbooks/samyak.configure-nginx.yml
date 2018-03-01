@@ -1,0 +1,32 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+   - 
+
+  tasks:
+
+      - name: Copy the relevant nginx certificate files to its specific certificate directories
+        copy:
+          src: '{{ item.src }}'
+          dest: '{{ item.dest }}'
+          owner: '{{ jenkins_user_id }}'
+          group: '{{ jenkins_process_group }}'
+        with_items:
+          - { src: /root/ansible/certificates/jenkins-selfsigned.key, dest: /etc/ssl/private/ }
+          - { src: /root/ansible/certificates/jenkins-selfsigned.crt, dest: /etc/ssl/certs/ }
+          - { src: /root/ansible/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
+          - { src: /root/ansible/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
+          - { src: /root/ansible/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
+          - { src: /root/ansible/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
+
+      - name: restart the nginx service
+        command: '{{ item }}'
+        with_items:
+          - systemctl restart nginx && systemctl status nginx
+        register: nginx_status
+
+      - debug: msg='{{ nginx_status.stdout }}'
