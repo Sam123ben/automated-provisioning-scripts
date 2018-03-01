@@ -57,7 +57,7 @@
           group: '{{ jenkins_process_group }}'
         with_items:
           - { src: /root/ansible/scriptApprovals/scriptApproval.xml, dest: /var/jenkins_home/scriptApproval.xml }
-          - { src: /root/ansible/sshKeys/id_rsa, dest: /var/jenkins/.ssh/ }
+          - { src: /root/ansible/sshKeys/id_jenkins_rsa, dest: /var/jenkins/.ssh/ }
           - { src: /root/ansible/jenkins-utilities/jenkins-support, dest: /usr/local/bin/ }
           - { src: /root/ansible/jenkins-utilities/init.groovy, dest: /usr/share/jenkins/ref/init.groovy.d/tcp-slave-agent-port.groovy }
           - { src: /root/ansible/ansible-playbooks/hosts, dest: /etc/ansible/ }
