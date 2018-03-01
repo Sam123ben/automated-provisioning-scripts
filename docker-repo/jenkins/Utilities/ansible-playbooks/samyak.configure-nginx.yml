@@ -6,6 +6,39 @@
 
   tasks:
 
+      - name: check registered the repository of nginx-release
+        shell: rpm -qa | grep nginx-release
+        register: result
+        ignore_errors: True
+        always_run: yes
+        changed_when: no
+
+      - name: add repository nginx-release (CentOS6/CentOS7)
+        yum: name="http://nginx.org/packages/centos/7/noarch/RPMS/nginx-nr-agent-2.0.0-12.el7.ngx.noarch.rpm"
+        when: result|failed
+
+      - name: disable the repository (pls set --enablerepo=nginx if you use it)
+        replace: dest=/etc/yum.repos.d/nginx.repo regexp="enabled *= *1" replace="enabled=0"
+        ignore_errors: True
+
+      - name: install nginx
+        yum: name=nginx state=present enablerepo=nginx
+
+      - name: Start Nginx
+        service: name=nginx enabled=yes state=started
+
+      - name: create sites-enabled folder in the nginx
+        file:
+          path: '{{ item }}'
+          recurse: yes
+          state: directory
+          owner: root
+          group: root
+          mode: 0775
+        with_items:
+          - /etc/ssl/private
+          - /etc/nginx/sites-enabled
+
       - name: Copy the relevant nginx certificate files to its specific certificate directories
         copy:
           src: '{{ item.src }}'
