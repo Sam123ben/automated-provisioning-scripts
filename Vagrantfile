@@ -9,8 +9,7 @@ Vagrant.configure("2") do |config|
          && ansible-playbook /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml \
          && docker run hello-world \
          && docker ps -a \
-
-         && sudo sh /home/vagrant/vibrato-code-test/docker-repo/jenkins/vagrant-auto-build.sh
+         && sh /home/vagrant/vibrato-code-test/docker-repo/jenkins/vagrant-auto-build.sh
   SHELL
 
 end
