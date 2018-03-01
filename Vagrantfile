@@ -1,6 +1,6 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "centos/7"
-  config.vm.network "private_network", ip: "192.168.33.10"
+  config.vm.network "private_network", ip: "192.168.33.15"
   config.vm.provision "shell", inline: <<-SHELL
     sudo yum update -y && yum install -y python ansible git \
          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \

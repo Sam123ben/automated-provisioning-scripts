@@ -17,15 +17,12 @@
             - zip
             - libselinux-python
             - initscripts
-            - docker-ce
-            - mod_ssl
-            - firewalld nginx
+            - vim
             - git
             - rpm
             - epel-release
             - lzma
             - perl
-            - nginx
           state: installed
 
       - name: Download the jenkins specific version war file to the container along with the plugin and dpkg installables

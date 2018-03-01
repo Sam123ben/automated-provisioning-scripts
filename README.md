@@ -4,7 +4,7 @@ This repository is created to help team to provision a docker container inside a
 
 As a best practice always ensure that the provisioning of any server or infra are done via any configuration management automation tool such as Ansible/Chef/Puppet/Salt. Even though we code our Dockerfile but still take care of creating image using Ansible rather the Dockerfile.
 
-NOTE: The whole automation is developed and tested under a non-proxy network, but if you are under a proxy please do add appropriate proxy details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of the Jenkins image.
+NOTE: The whole automation is developed and tested under a non-proxy network, but if you are under a proxy please do add appropriate proxy details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of the Jenkins image. The whole automation might take an approx between 5 - 15 mins depending on the network speed.
 
 ##This co-relate to one of my favorite quote
 
@@ -24,7 +24,7 @@ Below images could be built:
 
 ## [DONE] Steps to manually create Jenkins Image using the shell script on your local macbook or any docker installed host machine 
 
-    1. vagrant up
+    1. vagrant up (This will install and configure NGINX on your host VM)
     2. vagrant ssh
     3. cd vibrato-code-test/docker-repo/jenkins
     4. sudo sh ./docker-image-build.sh
@@ -34,7 +34,7 @@ Below images could be built:
          c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
     5. You can access the url: 'https://192.168.33.10/' (uid/pwd: admin/password)
 
-## [TESTING] Step to automate the Latest Jenkins installation on vagrant
+## [TESTING] Step to automate the Latest Jenkins installation on vagrant virtual box only for testing purpose only
 
     1. vagrant up
     2. on the browser type: http://192.168.33.10:8080
