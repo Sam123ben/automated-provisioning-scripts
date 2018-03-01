@@ -6,6 +6,42 @@
 
   tasks:
 
+      - name: Ensure all the dependencies are installed.
+        package:
+          name:
+            - yum-utils
+            - device-mapper-persistent-data 
+            - lvm2
+            - epel-release
+            - nginx
+            - initscripts
+            - rpm
+            - lzma
+            - perl
+          state: installed
+  
+      - name: Enable the services we installed
+        command: '{{ item }}'
+        with_items:
+          - systemctl enable firewalld
+          - usermod -aG docker vagrant
+          - systemctl enable docker
+
+      - name: Start the firewalld and docker services
+        service: name='{{ item }}' state=restarted
+        with_items:
+          - firewalld
+          - docker
+
+      - name: Open the firewall
+        command: '{{ item }}'
+        with_items:
+          - firewall-cmd --add-service=http 
+          - firewall-cmd --add-service=https
+          - firewall-cmd --runtime-to-permanent
+          - iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+          - iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
       - name: create sites-enabled folder in the nginx
         file:
           path: '{{ item }}'
@@ -25,8 +61,8 @@
           owner: root
           group: root
         with_items:
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/jenkins-selfsigned.key, dest: /etc/ssl/private/ }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/jenkins-selfsigned.crt, dest: /etc/ssl/certs/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
@@ -36,4 +72,4 @@
         service: name=nginx state=restarted
         register: nginx_status
 
-      - debug: var='{{ nginx_status }}'
+      - debug: msg='{{ nginx_status }}'

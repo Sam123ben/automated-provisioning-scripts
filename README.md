@@ -2,6 +2,8 @@
 
 This repository is created to help team to provision a docker container inside a vagrant image. This will create a new docker image with Centos flavour of Linux along with Jenkins and Ansible Tower installed. To ease up the setup, I have a shell script that will create the docker image and will run the container to start the Jenkins process.
 
+As a best practice always ensure that the provisioning of any server or infra are done via any configuration management automation tool such as Ansible/Chef/Puppet/Salt. Even though we code our Dockerfile but still take care of creating image using Ansible rather the Dockerfile.
+
 NOTE: The whole automation is done under a non-proxy network, but if you are under a proxy please do add appropriate proxy       details in your Vagrantfile, Dockerfile, and Ansible vars file and in shell script to have a successful build of           the Jenkins image.
 
 #This co-relate to one of my favorite quote:
