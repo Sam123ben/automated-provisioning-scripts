@@ -4,9 +4,6 @@
   connection: local
   gather_facts: true
 
-  vars:
-   - 
-
   tasks:
 
       - name: Copy the relevant nginx certificate files to its specific certificate directories
