@@ -22,7 +22,7 @@ Below images could be built:
         Install the latest/specific version of Ansible tower inside the docker container. I used the opensource version of Dockerfile but customized it to fit in for layering the Ansible Tower installation and configuration
 
 
-## Steps to manually create Jenkins Image using the shell script on your local macbook or any docker installed host machine
+## [DONE] Steps to manually create Jenkins Image using the shell script on your local macbook or any docker installed host machine 
 
     1. vagrant up
     2. vagrant ssh
@@ -33,7 +33,7 @@ Below images could be built:
          b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}
          c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
 
-## Step to automate the Latest Jenkins installation on vagrant
+## [TESTING] Step to automate the Latest Jenkins installation on vagrant
 
     1. vagrant up
     2. on the browser type: http://192.168.33.10:8080
