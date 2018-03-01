@@ -1,0 +1,8 @@
+export JENKINS_HOME="/var/jenkins_home"
+export JENKINS_SLAVE_AGENT_PORT="8085"
+export JAVA_OPTS='-Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true'
+export JENKINS_SECURITY_REALM='HudsonPrivateSecurityRealm'
+export JENKINS_VERSION='2.89.3'
+export JENKINS_UC='https://updates.jenkins.io'
+export JENKINS_UC_EXPERIMENTAL='https://updates.jenkins.io/experimental'
+export COPY_REFERENCE_FILE_LOG='/var/jenkins_home/copy_reference_file.log'
