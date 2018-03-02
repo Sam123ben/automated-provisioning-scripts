@@ -71,7 +71,3 @@
         - {src: /opt/ansible-utilities/docker-entrypoint.sh, dest: /docker-entrypoint.sh}
         - {src: /opt/ansible-utilities/inventory, dest: '{{ ansible_tower_path }}/ansible-tower-setup/ansible-tower-setup-{{ ansible_tower_ver }}/inventory'}
 
-#    - name: Install and Setup the tower
-#      command: '{{ item }}'
-#      with_items:
-#        - 'sh {{ ansible_tower_path }}/ansible-tower-setup/ansible-tower-setup-{{ ansible_tower_ver }}/setup.sh'
