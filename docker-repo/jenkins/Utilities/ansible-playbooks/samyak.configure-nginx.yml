@@ -78,6 +78,9 @@
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
         remote_src: true
 
+      - name: Symlink the configuration script (NGinx)
+        command: ln -s /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
+
       - name: restart the nginx service
         service: name=nginx state=restarted
         register: nginx_status

@@ -2,12 +2,15 @@
 
 FROM ubuntu:trusty
 
-LABEL maintainer rout.samyak@nab.com.au
+LABEL maintainer gmail.com
 
 ARG http_proxy
 ARG https_proxy
 ARG no_proxy
 ARG tower_version
+
+# Tested under a proxy protected environment for the reason have used proxy 
+# but have removed the info to make it work for non-proxy
 
 ENV http_proxy ${http_proxy}
 ENV https_proxy ${https_proxy}
