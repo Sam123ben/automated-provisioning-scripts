@@ -7,9 +7,6 @@
   vars:
     - remote_repo_url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     - PG_DATA: /var/lib/postgresql/9.6/main
-    - no_proxy: "*.local,169.254.169.254,169.254/16,webmail.nab.com.au,*.aur.national.com.au, *.aus.thenational.com,mail.google.com,wwwim.au.thenational.com,artifactory-dev.mob.esg.cd.non.whu.nab.com.au,intranetweb.au.thenational.com,wwwim.au.thenational.com, localhost,api.nab.com.au,*.mob.cd.non.whu.nab.com.au,*.espdev.aurdev.national.com.au, *.esg.cd.non.whu.nab.com.au,*.aurdev.national.com.au,metmm006.aur.national.com.au,*.aur.national.com.au,*.aus.thenational.com,rocketchat.ext2.national.com.au"
-    - http_proxy: http://forwardproxy:3128
-    - https_proxy: http://forwardproxy:3128
     - ansible_tower_ver: '3.2.3'
     - ansible_tower_url: 'http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-{{ ansible_tower_ver }}.tar.gz' 
     - ansible_tower_path: '/usr/share/ansible-tower'
