@@ -33,6 +33,7 @@
         with_items:
           - systemctl enable firewalld
           - systemctl enable docker
+          - systemctl enable nginx
 
       - name: Start the firewalld and docker services
         service: name='{{ item }}' state=restarted
@@ -68,13 +69,13 @@
           owner: root
           group: root
         with_items:
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/default.conf }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
+          - { src: /root/ansible/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
+          - { src: /root/ansible/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
+          - { src: /root/ansible/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
+          - { src: /root/ansible/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
+          - { src: /root/ansible/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/default.conf }
+          - { src: /root/ansible/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
+          - { src: /root/ansible/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
 
       - name: restart the nginx service
         service: name=nginx state=restarted

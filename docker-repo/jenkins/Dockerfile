@@ -15,7 +15,7 @@ ARG jenkins_master_run_cmd
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
-ENV JAVA_OPTS="-Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true"
+ENV JAVA_OPTS=" --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1 -Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true"
 ENV JENKINS_SECURITY_REALM HudsonPrivateSecurityRealm
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 
@@ -30,6 +30,7 @@ RUN ansible-galaxy install geerlingguy.java -p /etc/ansible/roles/
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.prepare-container.yml --extra-vars "vault_pwd=$VAULT_PWD"
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.install-geerling-java.yml
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.install-jenkins-master.yml --vault-password-file "$JENKINS_HOME/ignore_file" --extra-vars "http_proxy=$http_proxy" --extra-vars "https_proxy=$https_proxy" --extra-vars "no_proxy=$no_proxy" $jenkins_master_run_cmd
+RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.samyak.configure-nginx.yml
 
 EXPOSE ${master_port}
 EXPOSE ${agent_port}
