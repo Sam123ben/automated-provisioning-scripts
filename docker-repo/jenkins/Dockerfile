@@ -30,7 +30,7 @@ RUN ansible-galaxy install geerlingguy.java -p /etc/ansible/roles/
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.prepare-container.yml --extra-vars "vault_pwd=$VAULT_PWD"
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.install-geerling-java.yml
 RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.install-jenkins-master.yml --vault-password-file "$JENKINS_HOME/ignore_file" --extra-vars "http_proxy=$http_proxy" --extra-vars "https_proxy=$https_proxy" --extra-vars "no_proxy=$no_proxy" $jenkins_master_run_cmd
-RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.samyak.configure-nginx.yml
+RUN ansible-playbook /root/ansible/ansible-playbooks/samyak.configure-nginx.yml
 
 EXPOSE ${master_port}
 EXPOSE ${agent_port}
