@@ -24,7 +24,7 @@ RUN mkdir -p /opt/ansible-utilities
 
 ADD Utilities /opt/ansible-utilities
 
-RUN ansible-playbook /opt/ansible-utilities/main.yml --extravars "ansible_tower_ver=${tower_version}"
+RUN ansible-playbook /opt/ansible-utilities/main.yml --extra-vars "ansible_tower_ver=${tower_version}"
 
 RUN /usr/share/ansible-tower/ansible-tower-setup/ansible-tower-setup-${ansible_tower_ver}/setup.sh
 
