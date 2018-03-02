@@ -1,0 +1,87 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  tasks:
+
+      - name: Ensure all the dependencies are installed.
+        package:
+          name:
+            - yum-utils
+            - device-mapper-persistent-data 
+            - lvm2
+            - epel-release
+            - initscripts
+            - rpm
+            - lzma
+            - perl
+          state: installed
+  
+      - name: install the latest version of Nginx, firewalld, and docker
+        yum:
+          name: '{{ item }}'
+          state: latest
+        with_items:
+          - nginx
+          - firewalld
+          - docker
+
+      - name: Enable the services we installed
+        command: '{{ item }}'
+        with_items:
+          - systemctl enable firewalld
+          - systemctl enable docker
+          - systemctl enable nginx
+
+      - name: Start the firewalld and docker services
+        service: name='{{ item }}' state=restarted
+        with_items:
+          - firewalld
+          - docker
+
+      - name: Open the firewall
+        command: '{{ item }}'
+        with_items:
+          - firewall-cmd --add-service=http 
+          - firewall-cmd --add-service=https
+          - firewall-cmd --runtime-to-permanent
+          - iptables -I INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+          - iptables -I INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+      - name: create sites-enabled folder in the nginx
+        file:
+          path: '{{ item }}'
+          recurse: yes
+          state: directory
+          owner: root
+          group: root
+          mode: 0775
+        with_items:
+          - /etc/ssl/private
+          - /etc/nginx/sites-enabled
+
+      - name: Copy the relevant nginx certificate files to its specific certificate directories
+        copy:
+          src: '{{ item.src }}'
+          dest: '{{ item.dest }}'
+          owner: root
+          group: root
+        with_items:
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-available/jenkins }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/default.conf }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
+
+      - name: Symlink the configuration script (NGinx)
+        command: ln -s /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
+
+      - name: restart the nginx service
+        service: name=nginx state=restarted
+        register: nginx_status
+
+      - debug: msg='{{ nginx_status }}'

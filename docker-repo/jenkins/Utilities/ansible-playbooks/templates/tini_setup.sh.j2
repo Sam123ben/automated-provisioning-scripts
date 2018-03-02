@@ -1,0 +1,8 @@
+#/bin/sh
+
+curl -fsSL {{ TINI_URL }}-{{ architecture_check.stdout }} -o /sbin/tini
+curl -fsSL {{ TINI_URL }}-{{ architecture_check.stdout }}.asc -o /sbin/tini.asc
+gpg --import /var/jenkins_home/tini_pub.gpg
+gpg --verify /sbin/tini.asc
+rm -rf /sbin/tini.asc /root/.gnupg
+chmod +x /sbin/tini

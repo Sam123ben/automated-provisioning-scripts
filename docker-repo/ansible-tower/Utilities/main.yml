@@ -1,0 +1,70 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars:
+    - remote_repo_url: http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    - PG_DATA: /var/lib/postgresql/9.6/main
+    - ansible_tower_ver: '3.2.3'
+    - ansible_tower_url: 'http://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-{{ ansible_tower_ver }}.tar.gz' 
+    - ansible_tower_path: '/usr/share/ansible-tower'
+
+  tasks:
+
+    - name: Update all the packages before setting up the docker container
+      command: apt-get update -y
+
+    - name: Ensure all the dependencies are installed.
+      apt:
+        name:
+          - curl
+          - unzip
+          - zip
+          - vim
+          - git
+          - rpm
+          - lzma
+          - perl
+          - software-properties-common
+          - locales
+        state: installed
+
+    - name: Set locale
+      command: '{{ item }}'
+      with_items:
+        - locale-gen "en_US.UTF-8"
+        - dpkg-reconfigure locales
+        - apt-key adv --keyserver keyserver.ubuntu.com --recv 5BB92C09DB82666C
+
+    - name: create /var/log/tower
+      file:
+       path: "{{ item }}"
+       recurse: yes
+       state: directory
+       mode: 0775
+      with_items:
+        - /var/log/tower
+        - '{{ansible_tower_path}}/ansible-tower-setup/'
+
+    - name: Download the Tower tarball
+      get_url:
+        url: '{{ item.url }}'
+        dest: '{{ item.dest }}'
+      with_items:
+        - { url: '{{ ansible_tower_url }}', dest: '{{ ansible_tower_path }}/ansible-tower-setup-{{ ansible_tower_ver }}.tar.gz' }
+
+    - name: Extract/Untar the Tower ball and install and setup the tower
+      command: 'tar xvf {{ ansible_tower_path }}/ansible-tower-setup-{{ ansible_tower_ver }}.tar.gz -C {{ansible_tower_path}}/ansible-tower-setup/'
+
+    - name: Copy the startup script to the home directory and inventory file to the unzipped path
+      copy:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+        mode: 0777
+        remote_src: true
+      with_items:
+        - {src: /opt/ansible-utilities/docker-entrypoint.sh, dest: /docker-entrypoint.sh}
+        - {src: /opt/ansible-utilities/inventory, dest: '{{ ansible_tower_path }}/ansible-tower-setup/ansible-tower-setup-{{ ansible_tower_ver }}/inventory'}
+

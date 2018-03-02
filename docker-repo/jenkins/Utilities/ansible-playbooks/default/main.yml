@@ -1,0 +1,44 @@
+jenkins_process_user: jenkins 
+jenkins_process_group: '{{ jenkins_process_user }}'
+
+jenkins_user_id: 1000
+jenkins_group_id: 1000
+
+jenkins_home: /var/jenkins
+jenkins_workspace: /var/jenkins_home
+jenkins_volume: /Users/srout/jenkins_home
+
+jenkins_http_port: 8080
+jenkins_agent_port: 8085
+jenkins_java_opt: "-Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true"
+JENKINS_SECURITY_REALM: HudsonPrivateSecurityRealm
+
+JENKINS_UPDATE_CENTER_URL: https://updates.jenkins.io
+JENKINS_UC_EXPERIMENTAL_URL: https://updates.jenkins.io/experimental
+COPY_REFERENCE_FILE_LOG: /var/jenkins_home/copy_reference_file.log
+JENKINS_URL: 'https://repo.jenkins-ci.org/public/org/jenkins-ci/main/jenkins-war/{{ JENKINS_VERSION }}/jenkins-war-{{ JENKINS_VERSION }}.war'
+JENKINS_LATEST_VERSION_URL: "https://updates.jenkins-ci.org/latest/jenkins.war"
+
+
+SCRIPTLER_VERSION: '2.9'
+SCRIPTLER_URL: https://repo.jenkins-ci.org/releases/org/jenkins-ci/plugins/scriptler/{{ SCRIPTLER_VERSION }}/scriptler-{{ SCRIPTLER_VERSION }}.hpi
+
+jenkins_admin_user: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31636534336233666362343731323137653666383261356564636661666364623065376365393037
+          3730653932303635653763306234663838393763313032390a363966343733623939323438366338
+          39323038356564643938616635396533343565613065346331633630366138303563373366313764
+          3764633338353464380a663137633839336331326162623034666237363661666661363035376665
+          6266
+jenkins_admin_pwd: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          30666535646437633739633939393732383233643430343335356636396639303365383131663837
+          3863393065336134616130346264663566643766653866660a363937373938616439353634306230
+          66313930616266623065353235363661663139623464353638303261343164613138393535333137
+          3531343961623463370a643265303161323561313336306538616561663064326666303864653833
+          3439
+
+TINI_VERSION: v0.16.1
+TINI_URL: https://github.com/krallin/tini/releases/download/{{ TINI_VERSION }}/tini-static
+
+DPKG_URL: http://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm

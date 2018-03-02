@@ -1,0 +1,127 @@
+---
+# tasks file for samyak.install-jenkins-master
+
+- hosts: localhost
+  connection: local
+  gather_facts: true
+
+  vars_files:
+    - default/main.yml
+
+  tasks:
+      - name: Ensure all the dependencies are installed.
+        package:
+          name:
+            - curl
+            - unzip
+            - zip
+            - libselinux-python
+            - initscripts
+            - vim
+            - git
+            - rpm
+            - epel-release
+            - lzma
+            - perl
+          state: installed
+
+      - name: Download the jenkins specific version war file to the container along with the plugin and dpkg installables
+        get_url:
+          url: '{{ item.url }}'
+          dest: '{{ item.dest }}'
+        with_items:
+          - { url: '{{ JENKINS_URL }}', dest: /usr/share/jenkins/jenkins.war }
+          - { url: '{{ SCRIPTLER_URL }}', dest: /usr/share/jenkins/ref/plugins/ }
+          - { url: '{{ DPKG_URL }}', dest: /usr/share/jenkins/epel-release-7-11.noarch.rpm }
+        when: JENKINS_VERSION is defined
+
+      - name: Download the latest jenkins war file to the container along with the plugin and dpkg installables
+        get_url:
+          url: '{{ item.url }}'
+          dest: '{{ item.dest }}'
+        with_items:
+          - { url: '{{ JENKINS_LATEST_VERSION_URL }}', dest: /usr/share/jenkins/jenkins.war }
+          - { url: '{{ SCRIPTLER_URL }}', dest: /usr/share/jenkins/ref/plugins/ }
+          - { url: '{{ DPKG_URL }}', dest: /usr/share/jenkins/epel-release-7-11.noarch.rpm }
+        when: JENKINS_VERSION is not defined
+
+      - name: Install the downloaded rpm package
+        shell: '{{ item }}'
+        with_items:
+          - rpm -Uvh /usr/share/jenkins/epel-release-7-11.noarch.rpm
+          - yum install dpkg -y
+
+      - name: Get the output of the architecture of the os
+        shell: dpkg --print-architecture
+        register: architecture_check
+
+      - debug: msg={{ architecture_check.stdout }}
+
+      - name: Create a shell script
+        template:
+          src: '{{ item.src }}'
+          dest: '{{ item.dest }}'
+          owner: root
+          group: root
+          mode: 0775
+        with_items:
+          - { src: tini_setup.sh.j2, dest: "/usr/share/jenkins/tini_setup.sh" }
+
+      - name: Install and configure the TINI setup in the container
+        shell: sh /usr/share/jenkins/tini_setup.sh
+
+      - name: Changes the ownership of jenkins home directory
+        file:
+          path: '{{ item }}'
+          state: directory
+          owner: '{{ jenkins_process_user }}'
+          group: '{{ jenkins_process_group }}'
+          recurse: yes
+          mode: 0777
+        with_items:
+          - "{{ jenkins_home }}"
+          - /usr/share/jenkins
+          - /var/jenkins_home/
+        ignore_errors: true
+
+      - name: configure default user and password
+        template:
+          src: security.groovy.j2
+          dest: "/usr/share/jenkins/ref/init.groovy.d/security.groovy"
+          owner: "{{ jenkins_process_user }}"
+          group: "{{ jenkins_process_group }}"
+          mode: 0775
+        register: jenkins_users_config
+
+      - name: Install the recommended plugins to the newly installed Jenkins Master (recommended default plugins) and blueocean plugins
+        shell: '{{ item  }}'
+        with_items:
+          - xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+          - xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins-blue-ocean.txt
+          - ln -sf /usr/bin/git /usr/local/bin/git
+        environment:
+          JENKINS_UC: '{{ JENKINS_UPDATE_CENTER_URL }}'
+          JENKINS_UC_EXPERIMENTAL: '{{ JENKINS_UC_EXPERIMENTAL_URL }}'
+
+      - name: Create the known_hosts file in the .ssh of the jenkins home dir
+        shell: touch {{jenkins_home}}/.ssh/known_hosts 
+
+      - name: Change the ownership of the files and the keys
+        file: 
+          dest: '{{ item }}'
+          owner: '{{ jenkins_process_user }}'
+          group: '{{ jenkins_process_user }}'
+          recurse: yes
+        with_items:
+          - '{{jenkins_home}}/.ssh'
+          - /usr/share/jenkins/
+
+      - name: Change the mod of the id_jenkin_rsa pvt key
+        shell: '{{ item }}'
+        with_items:
+          - chmod -R 0400 {{jenkins_home}}/.ssh/id_jenkins_rsa
+
+      - name: delete or remove the tmp files
+        file: 
+          path: '{{ jenkins_workspace }}/ignore_file'
+          state: absent 
