@@ -1,4 +1,4 @@
-# vibrato-code-test
+# AUTOMATED CICD DEVOPS PROVISION USING DOCKER, ANSIBLE
 
 This repository is created to help team to provision a docker container inside a vagrant image. This will create a new docker image with Centos flavour of Linux along with Jenkins and Ansible Tower installed. To ease up the setup, I have a shell script that will create the docker image and will run the container to start the Jenkins process.
 
