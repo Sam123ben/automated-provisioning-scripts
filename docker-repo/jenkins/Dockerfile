@@ -15,7 +15,7 @@ ARG jenkins_master_run_cmd
 
 ENV JENKINS_HOME /var/jenkins_home
 ENV JENKINS_SLAVE_AGENT_PORT ${agent_port}
-ENV JAVA_OPTS=" --httpPort=$HTTP_PORT --httpListenAddress=127.0.0.1 -Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true"
+ENV JAVA_OPTS=" --httpListenAddress=127.0.0.1 --httpPort=$HTTP_PORT -ajp13Port=$AJP_PORT -Dhudson.model.ParametersAction.keepUndefinedParameters=true -Djenkins.install.runSetupWizard=false -Dpermissive-script-security.enabled=true"
 ENV JENKINS_SECURITY_REALM HudsonPrivateSecurityRealm
 ENV COPY_REFERENCE_FILE_LOG $JENKINS_HOME/copy_reference_file.log
 

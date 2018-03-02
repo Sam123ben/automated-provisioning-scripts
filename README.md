@@ -33,7 +33,8 @@ Below images could be built:
          a) vault_pass: qwertyuiop
          b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}
          c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
-    5. You can access the url: 'https://192.168.33.10/' (uid/pwd: admin/password) [NOTE: Ensure the ip are not having any conflicts]
+    5. To create the container: docker run -d -p 443:443 --name tower {$IMAGE_NAME}
+    6. You can access the url: 'https://192.168.33.10/' (uid/pwd: admin/password) [NOTE: Ensure the ip are not having any conflicts]
 
 ## [TESTING IN PROGRESS] Step to automate the Latest Jenkins installation on vagrant virtual box only for testing purpose only
 

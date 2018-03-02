@@ -72,10 +72,13 @@
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
-          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
+          - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-available/jenkins }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/default.conf }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
           - { src: /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
+
+      - name: Symlink the configuration script (NGinx)
+        command: ln -s /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/
 
       - name: restart the nginx service
         service: name=nginx state=restarted
