@@ -16,6 +16,8 @@
             - initscripts
             - rpm
             - lzma
+            - wget
+            - zip
             - perl
           state: installed
   
