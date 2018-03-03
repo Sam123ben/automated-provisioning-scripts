@@ -61,6 +61,7 @@
         with_items:
           - /etc/ssl/private
           - /etc/nginx/sites-enabled
+          - /etc/nginx/sites-available
 
       - name: Copy the relevant nginx certificate files to its specific certificate directories
         copy:
@@ -72,8 +73,8 @@
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/certificates/cert.key, dest: /etc/ssl/private/ }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/certificates/cert.crt, dest: /etc/ssl/certs/ }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/certificates/dhparam.pem, dest: /etc/ssl/certs/ }
-          - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-enabled/default }
-          - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/default.conf }
+          - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/sites-available/jenkins }
+          - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/jenkins.conf }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
         remote_src: true
