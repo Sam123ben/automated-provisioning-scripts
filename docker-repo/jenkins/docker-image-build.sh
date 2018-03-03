@@ -16,6 +16,8 @@ echo '\nPlease enter the version of Jenkins you wish to install,
 or the default value will be latest if not entered explicitly: '
 read jenkins_version
 
+ansible-playbook Utilities/ansible-playbooks/samyak.configure-nginx.yml 
+
 if [ -n "$jenkins_version" ]
 then
       echo "\nThe jenkins version that will be installed is: $jenkins_version"
