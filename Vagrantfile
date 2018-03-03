@@ -6,8 +6,8 @@ Vagrant.configure("2") do |config|
     sudo yum update -y && yum install -y python ansible git \
          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
          && yum-config-manager --enable docker-ce-edge \
-         && git clone -b feature/vagrant-setup https://github.com/Sam123ben/vibrato-code-test.git \
-         && ansible-playbook /home/vagrant/vibrato-code-test/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml
+         && git clone -b develop https://github.com/Sam123ben/automated-provisioning-scripts.git \
+         && ansible-playbook /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml
   SHELL
 
 end
