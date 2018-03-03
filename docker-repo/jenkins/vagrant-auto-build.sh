@@ -14,7 +14,8 @@ image_name="jenkins-latest"
 
 echo "\nThe jenkins version that will be installed is: latest"
 echo '\nBuilding the latest version of Docker-jenkins image\n'
-docker build -t $image_name --build-arg master_port=$master_port --build-arg agent_port=$agent_port --build-arg VAULT_PWD=$vault_pass -f /home/vagrant/vibrato-code-test/docker-repo/jenkins/Dockerfile .
+#docker build -t $image_name --build-arg master_port=$master_port --build-arg agent_port=$agent_port --build-arg VAULT_PWD=$vault_pass -f /home/vagrant/vibrato-code-test/docker-repo/jenkins/Dockerfile .
+docker build -t $image_name --build-arg master_port=$master_port --build-arg agent_port=$agent_port --build-arg VAULT_PWD=$vault_pass .
 
 container_name=$image_name-app
 sleep 10s

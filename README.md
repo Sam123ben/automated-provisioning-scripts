@@ -27,14 +27,20 @@ Below images could be built:
 
     1. vagrant up (This will install and configure NGINX on your host VM)
     2. vagrant ssh
-    3. cd vibrato-code-test/docker-repo/jenkins
+    3. cd automated-provisioning-scripts/docker-repo/jenkins
     4. sudo sh ./docker-image-build.sh
        Pass the appropriate values for the parameters you will be prompted:
          a) vault_pass: qwertyuiop
          b) image_name: {understandable image name (eg: jenkins-{version-number}-master)}
          c) jenkins_version: {If you press enter without stating the version then default it will install and configure latest jenkins or you can specify a valid jenkins version to have it installed and configured}
-    5. To create the container: docker run -d -p 443:443 --name tower {$IMAGE_NAME}
-    6. You can access the url: 'https://192.168.33.10/' (uid/pwd: admin/password) [NOTE: Ensure the ip are not having any conflicts]
+    6. You can access the url: 'http://192.168.33.10:8080/' (uid/pwd: admin/password) [NOTE: Ensure the ip are not having any conflicts]
+
+    7. For running Ansible Tower docker container: 
+	a) step 1 and 2
+        b) cd automated-provisioning-scripts/docker-repo/ansible-tower
+        c) sudo sh ./docker-image-build.sh
+        d) As the port number of the vagrant box already been used by Nginx (443/80) so map a different port of your wish to run the container
+	   , if mapped to 9000 then the url: https://192.168.33.16:9000 (docker run -d -p 9000:443 --name tower ansible-tower-3.2.3)
 
 ## [TESTING IN PROGRESS] Step to automate the Latest Jenkins installation on vagrant virtual box only for testing purpose only
 
