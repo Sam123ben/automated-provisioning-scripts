@@ -4,7 +4,9 @@ This repo host the source code to install jenkins Latest/LTS or any specific ver
 
 
 To pull the LTS (v2.89.4) Jenkins run the command as below:
+
      1. docker pull sam123ben/jenkins-master-latest
+
      2. docker run --restart=always --name ${CONTAINER_NAME} -u jenkins -p ${HOST_MASTER_PORT/8080}:${CONTAINER_MASTER_PORT/8080} -p ${HOST_AGENTPORT/8085}:${CONTAINER_AGENTPORT/8085} -d ${IMAGE_NAME}
         EG: docker run --restart=always --name jenkins-2.89.4-app -u jenkins -p 8080:8080 -p 8085:8085 -d sam123ben/jenkins-master-latest
         
