@@ -2,9 +2,14 @@
 
 This repo holds the source code to create an image that have Ansible Tower installed and configured to run on default 80/443 Nginx server. If your host latop or workstation or vagrant VM already is mapped to port 443/80 then please port forwarding to a different available port (8000/9090) from 443 docker conatiner port to run the container successfully.
 
+To pull the Latest (v3.2.3) Jenkins run the command as below:
+     1. docker pull sam123ben/ansible-tower
+     2. docker run -d -p 9000:443 --name ${CONTAINER_NAME} ${IMAGE_NAME/ID}
+          EG: docker run -d -p 443:443 --name ansible-tower-app sam123ben/ansible-tower  (If 443 port is not yet used up by our host machine or try to redirect th port 443 to another available port number in our host)
+
 Below image could be built:
 
-    1. Ansible Tower (Specific version):
+     Ansible Tower (Specific version):
         Install the latest/specific version of Ansible tower inside the docker container. I used the opensource version of Dockerfile but customized it to fit in for layering the Ansible Tower installation and configuration.
 
         This works on any host machine (MACOS/Linux) keeping in mind that no IP conflicts.

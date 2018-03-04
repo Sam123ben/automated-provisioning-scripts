@@ -2,6 +2,12 @@
 
 This repo host the source code to install jenkins Latest/LTS or any specific version we wish to install and configure. Its a mix of Ansible and Dockerfile where the provision, installation and configuration of the jenkins is done using Ansible (Prefer tool for the container provisioning automation). This will install all the required plugins and will configure the Jenkins in layer. So in case a team wish to not use any plugins they can edit the same in the pluginx.txt file without any modification to Dockerfile. The intent need to be clear that is we have a Dockerfile that will host the jenkins container using Ansible.
 
+
+To pull the LTS (v2.89.4) Jenkins run the command as below:
+     1. docker pull sam123ben/jenkins-master-latest
+     2. docker run --restart=always --name ${CONTAINER_NAME} -u jenkins -p ${HOST_MASTER_PORT/8080}:${CONTAINER_MASTER_PORT/8080} -p ${HOST_AGENTPORT/8085}:${CONTAINER_AGENTPORT/8085} -d ${IMAGE_NAME}
+        EG: docker run --restart=always --name jenkins-2.89.4-app -u jenkins -p 8080:8080 -p 8085:8085 -d sam123ben/jenkins-master-latest
+        
 Below images could be built:
 
     1. Jenkins (latest version or any specific version):
