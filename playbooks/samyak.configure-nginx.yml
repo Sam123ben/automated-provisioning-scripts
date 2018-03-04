@@ -84,7 +84,7 @@
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/jenkins.conf , dest: /etc/nginx/conf.d/jenkins.conf }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/nginx.conf , dest: /etc/nginx/nginx.conf }
           - { src: /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/scripts/ssl.conf , dest: /etc/nginx/conf.d/ssl.conf }
-          - { src: /home/vagrant/automated-provisioning-scripts/sample-website/* , dest: /usr/share/nginx/html/ }
+          - { src: /home/vagrant/automated-provisioning-scripts/sample-website/ , dest: /usr/share/nginx/html/ }
         remote_src: true
 
       - name: Symlink the configuration script (NGinx)
