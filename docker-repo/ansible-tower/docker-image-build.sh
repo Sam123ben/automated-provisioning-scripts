@@ -1,12 +1,12 @@
 #!/bin/sh
 
-echo '\n\nPlease enter the known vault password: '
+echo '\n\nPlease enter the known vault password (vault_pass): '
 read vault_pass
 
-echo '\n\nPlease enter a unique Image Name to be created: '
+echo '\n\nPlease enter a unique Image Name to be created (image_name): '
 read image_name
 
-echo '\n\nPlease enter the version of Ansile-Tower (AWX) you wish to install: '
+echo '\n\nPlease enter the version of Ansile-Tower (AWX) you wish to install (tower_version): '
 read tower_version
 
 echo "\n\nThe jenkins version that will be installed is: $tower_version"
