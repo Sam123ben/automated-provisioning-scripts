@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
          && yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo \
          && yum-config-manager --enable docker-ce-edge \
          && git clone -b master https://github.com/Sam123ben/automated-provisioning-scripts.git \
-         && ansible-playbook /home/vagrant/automated-provisioning-scripts/docker-repo/jenkins/Utilities/ansible-playbooks/samyak.configure-nginx.yml
+         && ansible-playbook /home/vagrant/automated-provisioning-scripts/playbooks/samyak.configure-nginx.yml
   SHELL
 
 end
