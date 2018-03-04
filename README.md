@@ -10,6 +10,10 @@ NOTE: The whole automation is developed and tested under a non-proxy network, bu
 
     """ ALWAYS TREAT YOUR INFRA/SERVERS AS CATTLE AND NOT AS PET """
 
+If the Vagrant is successfully provisioned then you can copy paste the below URL to test if the sample wesbsite page is running or not:
+
+https://192.168.33.16/
+
 Below images could be built:
 
     1. Ansible Tower (Specific version):
